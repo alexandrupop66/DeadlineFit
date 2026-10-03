@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DeadlineFit shows how much estimation error a plan can absorb before its deadline breaks.">
+  <title>DeadlineFit</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="app-header">
+      <div>
+        <p class="brand">DeadlineFit</p>
+        <h1>Know how wrong your estimates can be before your deadline breaks.</h1>
+      </div>
+      <p class="header-note">A deterministic deadline feasibility check. No AI guesses. No hidden thresholds.</p>
+    </header>
+
+    <section class="workspace" aria-label="Deadline planner">
+      <form id="plan-form" class="panel input-panel" novalidate>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Plan inputs</p>
+            <h2>Build your plan</h2>
+          </div>
+        </div>
+
+        <label class="field">
+          <span>Deadline</span>
+          <input id="deadline" type="date" required>
+          <small class="field-hint">Today counts as an available calendar day.</small>
+          <small class="field-error" data-error="deadline"></small>
+        </label>
+
+        <div class="tasks-section">
+          <div class="tasks-heading">
+            <div>
+              <span class="field-label">Tasks</span>
+              <small>Work is scheduled in this order.</small>
+            </div>
+            <button id="add-task" type="button" class="secondary-button">+ Add task</button>
+          </div>
+          <div id="task-list" class="task-list"></div>
+        </div>
+
+        <label class="field compact-field">
+          <span>Available hours per day</span>
+          <input id="hours-per-day" type="number" min="0.1" step="0.1" placeholder="4" required>
+          <small class="field-error" data-error="hoursPerDay"></small>
+        </label>
+
+        <button class="primary-button" type="submit">Build plan</button>
+      </form>
+
+      <section id="result" class="panel result-panel empty" aria-live="polite" aria-atomic="true">
+        <div class="empty-state">
+          <p class="eyebrow">Plan result</p>
+          <h2>See how much error your deadline can absorb.</h2>
+          <p>Add your deadline, tasks and daily capacity, then build the plan.</p>
+          <div class="formula">tolerance = (capacity ÷ estimated work − 1) × 100</div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
