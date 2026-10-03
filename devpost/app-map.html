@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeadlineFit — App Map</title>
+  <style>
+    :root { color-scheme: light; --ink:#111827; --muted:#5b6475; --line:#d9e0ec; --bg:#f4f7fb; --card:#ffffff; --accent:#365bd8; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); line-height:1.55; }
+    main { width:min(980px, calc(100% - 32px)); margin:40px auto 64px; }
+    h1 { font-size:clamp(2rem, 5vw, 3.4rem); line-height:1.05; margin:0 0 10px; }
+    h2 { margin-top:0; font-size:1.25rem; }
+    h3 { font-size:1rem; margin-bottom:6px; }
+    p, li { color:var(--muted); }
+    code { background:#eef2f9; border:1px solid #dde5f2; border-radius:6px; padding:.08rem .35rem; color:#23365f; }
+    .eyebrow { color:var(--accent); text-transform:uppercase; letter-spacing:.14em; font-size:.76rem; font-weight:800; }
+    .lead { max-width:760px; font-size:1.08rem; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:24px 0; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:0 12px 32px rgba(41,58,93,.06); }
+    .wide { grid-column:1/-1; }
+    .route { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:16px; }
+    .stop { border:1px solid var(--line); border-radius:12px; padding:14px; background:#fbfcff; }
+    .stop strong { display:block; margin-bottom:6px; }
+    .run { background:#101828; color:#fff; border-radius:12px; padding:14px 16px; overflow:auto; }
+    .run code { color:#fff; background:transparent; border:0; padding:0; }
+    svg { width:100%; height:auto; display:block; }
+    details { border-top:1px solid var(--line); padding:12px 0 0; margin-top:12px; }
+    summary { cursor:pointer; font-weight:700; }
+    a { color:#244fd0; }
+    @media (max-width:760px) { .grid,.route { grid-template-columns:1fr; } .wide { grid-column:auto; } main { margin-top:24px; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Devpost Learn · Build map</p>
+  <h1>DeadlineFit</h1>
+  <p class="lead">DeadlineFit is a deterministic deadline feasibility checker. It turns a deadline, task estimates and hours per day into a day-by-day plan and one key metric: how much aggregate estimation error the plan can absorb before it stops fitting.</p>
+
+  <section class="grid" aria-label="Application overview">
+    <article class="card">
+      <h2>Main pieces</h2>
+      <ul>
+        <li><code>index.html</code> — the single-screen form and result shell.</li>
+        <li><code>src/app.js</code> — reads the form, calls the planner, renders status, tolerance and allocation.</li>
+        <li><code>src/planner.js</code> — validates inputs, counts calendar days, calculates tolerance and allocates work.</li>
+        <li><code>test/planner.test.js</code> — verifies the deterministic rules, including the UK DST boundary.</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2>Run it again</h2>
+      <p>Requires Node.js 20+. No API keys, database, backend service or network connection are required.</p>
+      <div class="run"><code>npm start</code></div>
+      <p>Then open <code>http://localhost:4173</code>. Run <code>npm test</code> for the planner checks.</p>
+    </article>
+
+    <article class="card wide">
+      <h2>One action through the app</h2>
+      <p>The route below follows the real <strong>Build plan</strong> action from input to visible result.</p>
+      <svg viewBox="0 0 900 210" role="img" aria-labelledby="flowTitle flowDesc">
+        <title id="flowTitle">DeadlineFit data flow</title>
+        <desc id="flowDesc">Form submission in app.js passes user inputs to buildPlan in planner.js, which returns status, tolerance and allocation for rendering back in app.js.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#365bd8"/></marker>
+        </defs>
+        <rect x="20" y="55" rx="14" ry="14" width="245" height="100" fill="#fff" stroke="#cfd8ea"/>
+        <text x="42" y="86" font-size="16" font-weight="700" fill="#111827">1. Form submit</text>
+        <text x="42" y="112" font-size="14" fill="#5b6475">src/app.js</text>
+        <text x="42" y="135" font-size="13" fill="#5b6475">readTasks() → buildPlan(...)</text>
+        <line x1="266" y1="105" x2="324" y2="105" stroke="#365bd8" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="330" y="35" rx="14" ry="14" width="245" height="140" fill="#fff" stroke="#cfd8ea"/>
+        <text x="352" y="68" font-size="16" font-weight="700" fill="#111827">2. Planner engine</text>
+        <text x="352" y="94" font-size="14" fill="#5b6475">src/planner.js</text>
+        <text x="352" y="117" font-size="13" fill="#5b6475">buildPlan()</text>
+        <text x="352" y="138" font-size="13" fill="#5b6475">tolerance + status</text>
+        <text x="352" y="159" font-size="13" fill="#5b6475">allocateTasks()</text>
+        <line x1="576" y1="105" x2="634" y2="105" stroke="#365bd8" stroke-width="3" marker-end="url(#arrow)"/>
+        <rect x="640" y="55" rx="14" ry="14" width="240" height="100" fill="#fff" stroke="#cfd8ea"/>
+        <text x="662" y="86" font-size="16" font-weight="700" fill="#111827">3. Visible result</text>
+        <text x="662" y="112" font-size="14" fill="#5b6475">src/app.js</text>
+        <text x="662" y="135" font-size="13" fill="#5b6475">renderResult() + allocation</text>
+      </svg>
+    </article>
+
+    <article class="card wide">
+      <h2>Reference route — 3 stops</h2>
+      <div class="route">
+        <div class="stop"><strong>1 · Input and submit</strong><code>src/app.js</code><p>Search for <code>form.addEventListener('submit'</code>. This gathers the deadline, hours/day and task rows, then calls the planner.</p></div>
+        <div class="stop"><strong>2 · Core logic</strong><code>src/planner.js</code><p>Start at <code>buildPlan()</code>. The key formula is calculated here, and feasible plans are passed to <code>allocateTasks()</code>.</p></div>
+        <div class="stop"><strong>3 · Output</strong><code>src/app.js</code><p>Search for <code>renderResult()</code> and <code>renderAllocation()</code>. These turn the deterministic result into Feasible/Impossible, tolerance and the day-by-day plan.</p></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>To change this, start here</h2>
+      <ul>
+        <li>Change the calculation or allocation rule → <code>src/planner.js</code>.</li>
+        <li>Change result wording or formatting → <code>src/app.js</code>.</li>
+        <li>Change layout, spacing or responsive styling → <code>styles.css</code>.</li>
+        <li>Add or adjust rule verification → <code>test/planner.test.js</code>.</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2>A practice to reuse</h2>
+      <p>The project turned the distinctive claim into a precise formula and observable transitions before polishing the UI. The evidence is split across <code>devpost/prd.md</code>, <code>src/planner.js > buildPlan()</code>, and the planner tests. On another project, define the one behaviour that proves the idea, make its output measurable, and verify it before adding surrounding features.</p>
+      <details>
+        <summary>Why the DST test matters</summary>
+        <p>The plan counts calendar dates, not 24-hour blocks. Testing across the UK clock change protects the deadline calculation from an implementation shortcut that could otherwise create a one-day error.</p>
+      </details>
+    </article>
+
+    <article class="card wide">
+      <h2>Snapshot note</h2>
+      <p>This map describes the final build reviewed on 03/10/2026. The portable review bundle intentionally did not include <code>.git</code> metadata, so a source commit identifier is not embedded in this snapshot. If shipping changes mapped behaviour, regenerate this page from the finished source.</p>
+    </article>
+  </section>
+</main>
+</body>
+</html>
